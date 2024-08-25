@@ -1,0 +1,18 @@
+{
+  "name": "bus-schedules",
+  "version": "0.0.1",
+  "description": "online bus schedule",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "type": "module",
+  "author": "https://github.com/romankrivopalov",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "luxon": "^3.5.0"
+  }
+}
