@@ -34,7 +34,7 @@ const renderBusData = (buses) => {
 
 const initWebSocket = () => {
     // WebSocket() - from the browser API
-    const webSocket = new WebSocket(`ws://${location.host}`);
+    const webSocket = new WebSocket(`wss://${location.host}`);
 
     webSocket.addEventListener('open', () => {
         console.log(`WebSocket connection opened: ${webSocket}`);
