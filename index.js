@@ -13,6 +13,9 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // -- when using 'type: module'
 
+// init frontend
+app.use(express.static(path.join(__dirname, 'public')));
+
 const loadBuses = async () => {
     const data = await readFile(path.join(__dirname, 'buses.json'), 'utf-8');
 
@@ -59,7 +62,7 @@ const sendUpdateData = async (req, res) => {
 
         return { ...bus,
             nextDeparture: {
-                data: nextDeparture.toFormat('yyyy-MM-dd'),
+                date: nextDeparture.toFormat('yyyy-MM-dd'),
                 time: nextDeparture.toFormat('HH:mm:ss'),
             }
         }
@@ -68,16 +71,21 @@ const sendUpdateData = async (req, res) => {
     return updatedBuses;
 }
 
+const sortBuses = (buses) => [...buses].sort((a, b) =>
+    new Date(`${a.nextDeparture.date}T${a.nextDeparture.time}`) -
+    new Date(`${b.nextDeparture.date}T${b.nextDeparture.time}`)
+);
+
 app.get('/next-departure', async (req, res) => {
     try {
-        const updatedBuses = await loadBuses();
-
-        res.send(await sendUpdateData());
+        const updatedBuses = await sendUpdateData();
+        const sortedBuses = sortBuses(updatedBuses);
+        res.send(sortedBuses);
     } catch (e) {
         res.send('Error');
     }
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`App listening on http://localhost:${port}`);
 })
